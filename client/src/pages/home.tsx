@@ -111,6 +111,14 @@ export default function Home() {
               </motion.div>
             ))}
           </div>
+
+          <div className="text-center mt-12">
+            <Link href="/activities">
+              <button className="px-8 py-4 rounded-xl bg-primary text-white font-bold text-lg shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-1 transition-all duration-300">
+                عرض الأنشطة الإبداعية
+              </button>
+            </Link>
+          </div>
         </div>
       </section>
     </Layout>

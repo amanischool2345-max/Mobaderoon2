@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { insertUserSchema } from "./schema";
+import { insertUserSchema, insertInitiativeSchema } from "./schema";
 
 export const errorSchemas = {
   validation: z.object({
@@ -46,6 +46,46 @@ export const api = {
       path: "/api/user",
       responses: {
         200: z.object({ id: z.number(), username: z.string() }).nullable(),
+      },
+    },
+  },
+  initiatives: {
+    list: {
+      method: "GET" as const,
+      path: "/api/initiatives",
+      responses: {
+        200: z.array(z.object({ 
+          id: z.number(), 
+          name: z.string(), 
+          targetCategory: z.string(), 
+          goal: z.string(), 
+          timePeriod: z.string(),
+          createdAt: z.date().optional(),
+        })),
+      },
+    },
+    create: {
+      method: "POST" as const,
+      path: "/api/initiatives",
+      input: insertInitiativeSchema,
+      responses: {
+        201: z.object({ 
+          id: z.number(), 
+          name: z.string(), 
+          targetCategory: z.string(), 
+          goal: z.string(), 
+          timePeriod: z.string(),
+          createdAt: z.date().optional(),
+        }),
+        400: errorSchemas.validation,
+      },
+    },
+    delete: {
+      method: "DELETE" as const,
+      path: "/api/initiatives/:id",
+      responses: {
+        204: z.void(),
+        404: errorSchemas.notFound,
       },
     },
   },
