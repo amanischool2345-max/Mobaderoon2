@@ -8,6 +8,7 @@ import AuthPage from "@/pages/auth";
 import About from "@/pages/about";
 import Contact from "@/pages/contact";
 import Ideas from "@/pages/ideas";
+import Activities from "@/pages/activities";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -18,6 +19,7 @@ function Router() {
       <Route path="/about" component={About} />
       <Route path="/contact" component={Contact} />
       <Route path="/ideas" component={Ideas} />
+      <Route path="/activities" component={Activities} />
       {/* Fallback to 404 */}
       <Route component={NotFound} />
     </Switch>

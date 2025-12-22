@@ -33,6 +33,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <Link href="/ideas" className={`text-sm font-medium transition-colors hover:text-primary ${location === '/ideas' ? 'text-primary' : 'text-muted-foreground'}`}>
               الأفكار الإبداعية
             </Link>
+            <Link href="/activities" className={`text-sm font-medium transition-colors hover:text-primary ${location === '/activities' ? 'text-primary' : 'text-muted-foreground'}`}>
+              الأنشطة الإبداعية
+            </Link>
             <Link href="/about" className={`text-sm font-medium transition-colors hover:text-primary ${location === '/about' ? 'text-primary' : 'text-muted-foreground'}`}>
               من نحن
             </Link>
@@ -95,6 +98,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
               </Link>
               <Link href="/ideas" onClick={() => setIsMobileMenuOpen(false)} className="py-2 text-lg font-medium text-foreground">
                 الأفكار الإبداعية
+              </Link>
+              <Link href="/activities" onClick={() => setIsMobileMenuOpen(false)} className="py-2 text-lg font-medium text-foreground">
+                الأنشطة الإبداعية
               </Link>
               <Link href="/about" onClick={() => setIsMobileMenuOpen(false)} className="py-2 text-lg font-medium text-foreground">
                 من نحن

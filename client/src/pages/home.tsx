@@ -112,10 +112,15 @@ export default function Home() {
             ))}
           </div>
 
-          <div className="text-center mt-12">
+          <div className="text-center mt-12 flex gap-4 justify-center flex-wrap">
             <Link href="/ideas">
               <button className="px-8 py-4 rounded-xl bg-primary text-white font-bold text-lg shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-1 transition-all duration-300">
-                عرض الأفكار الإبداعية
+                الأفكار الإبداعية
+              </button>
+            </Link>
+            <Link href="/activities">
+              <button className="px-8 py-4 rounded-xl bg-secondary text-white font-bold text-lg shadow-lg shadow-secondary/25 hover:shadow-xl hover:shadow-secondary/30 hover:-translate-y-1 transition-all duration-300">
+                الأنشطة الإبداعية
               </button>
             </Link>
           </div>
