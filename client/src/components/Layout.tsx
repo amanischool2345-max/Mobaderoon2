@@ -30,12 +30,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <Link href="/" className={`text-sm font-medium transition-colors hover:text-primary ${location === '/' ? 'text-primary' : 'text-muted-foreground'}`}>
               الرئيسية
             </Link>
-            <a href="#" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
+            <Link href="/about" className={`text-sm font-medium transition-colors hover:text-primary ${location === '/about' ? 'text-primary' : 'text-muted-foreground'}`}>
               من نحن
-            </a>
-            <a href="#" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
+            </Link>
+            <Link href="/contact" className={`text-sm font-medium transition-colors hover:text-primary ${location === '/contact' ? 'text-primary' : 'text-muted-foreground'}`}>
               اتصل بنا
-            </a>
+            </Link>
           </div>
 
           {/* User Controls */}
@@ -90,12 +90,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="py-2 text-lg font-medium text-foreground">
                 الرئيسية
               </Link>
-              <a href="#" className="py-2 text-lg font-medium text-foreground">
+              <Link href="/about" onClick={() => setIsMobileMenuOpen(false)} className="py-2 text-lg font-medium text-foreground">
                 من نحن
-              </a>
-              <a href="#" className="py-2 text-lg font-medium text-foreground">
+              </Link>
+              <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)} className="py-2 text-lg font-medium text-foreground">
                 اتصل بنا
-              </a>
+              </Link>
               <div className="h-px bg-border my-2" />
               {user ? (
                 <div className="flex items-center justify-between py-2">
