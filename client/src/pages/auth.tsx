@@ -6,7 +6,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useLocation } from "wouter";
 import { Layout } from "@/components/Layout";
 import { motion, AnimatePresence } from "framer-motion";
-import { Loader2, ArrowRight } from "lucide-react";
+import { Loader2, ArrowRight, ArrowLeft } from "lucide-react";
 import { z } from "zod";
 
 export default function AuthPage() {
@@ -18,6 +18,10 @@ export default function AuthPage() {
     setLocation("/");
     return null;
   }
+
+  const handleGuestAccess = () => {
+    setLocation("/");
+  };
 
   const formSchema = insertUserSchema;
   const form = useForm<InsertUser>({
@@ -136,7 +140,7 @@ export default function AuthPage() {
               </button>
             </form>
 
-            <div className="mt-6 text-center text-sm text-muted-foreground">
+            <div className="mt-6 text-center text-sm text-muted-foreground space-y-4">
               <p>
                 {isLogin ? "ليس لديك حساب؟" : "لديك حساب بالفعل؟"}{" "}
                 <button
@@ -146,6 +150,16 @@ export default function AuthPage() {
                   {isLogin ? "سجل الآن" : "سجل دخولك"}
                 </button>
               </p>
+              
+              <div className="pt-4 border-t border-border/30">
+                <button
+                  onClick={handleGuestAccess}
+                  className="w-full py-3 rounded-lg text-muted-foreground font-medium hover:bg-muted/50 transition-colors flex items-center justify-center gap-2"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  المتابعة كضيف
+                </button>
+              </div>
             </div>
           </motion.div>
         </div>

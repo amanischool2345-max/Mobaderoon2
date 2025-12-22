@@ -36,12 +36,12 @@ export default function Home() {
               <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4">
                 <Link href="/auth">
                   <button className="px-8 py-4 rounded-xl bg-primary text-white font-bold text-lg shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-1 transition-all duration-300 flex items-center gap-2 group">
-                    ابدأ الآن
+                    تسجيل الدخول
                     <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300" />
                   </button>
                 </Link>
                 <button className="px-8 py-4 rounded-xl bg-white border-2 border-border text-foreground font-bold text-lg hover:border-primary/50 hover:bg-primary/5 transition-all duration-300">
-                  تعرف علينا
+                  المتابعة كضيف
                 </button>
               </div>
             </motion.div>

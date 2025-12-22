@@ -54,11 +54,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 </button>
               </div>
             ) : (
-              <Link href="/auth">
-                <button className="px-6 py-2.5 rounded-xl bg-primary text-primary-foreground font-medium shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 transition-all duration-200">
-                  تسجيل الدخول
-                </button>
-              </Link>
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-muted-foreground font-medium px-3 py-1.5 rounded-full bg-muted/50">
+                  ضيف
+                </span>
+                <Link href="/auth">
+                  <button className="px-6 py-2.5 rounded-xl bg-primary text-primary-foreground font-medium shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 transition-all duration-200">
+                    تسجيل الدخول
+                  </button>
+                </Link>
+              </div>
             )}
           </div>
 
@@ -103,9 +108,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   </button>
                 </div>
               ) : (
-                <Link href="/auth" onClick={() => setIsMobileMenuOpen(false)} className="w-full text-center py-3 rounded-lg bg-primary text-primary-foreground font-bold">
-                  تسجيل الدخول
-                </Link>
+                <div className="space-y-2">
+                  <div className="text-xs text-muted-foreground font-medium px-3 py-1.5 rounded-full bg-muted/50 inline-block">
+                    ضيف
+                  </div>
+                  <Link href="/auth" onClick={() => setIsMobileMenuOpen(false)} className="w-full text-center py-3 rounded-lg bg-primary text-primary-foreground font-bold block">
+                    تسجيل الدخول
+                  </Link>
+                </div>
               )}
             </div>
           </motion.div>
