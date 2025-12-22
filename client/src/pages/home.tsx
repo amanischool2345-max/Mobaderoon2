@@ -113,9 +113,9 @@ export default function Home() {
           </div>
 
           <div className="text-center mt-12">
-            <Link href="/activities">
+            <Link href="/ideas">
               <button className="px-8 py-4 rounded-xl bg-primary text-white font-bold text-lg shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-1 transition-all duration-300">
-                عرض الأنشطة الإبداعية
+                عرض الأفكار الإبداعية
               </button>
             </Link>
           </div>

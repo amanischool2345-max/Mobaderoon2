@@ -6,7 +6,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@shared/routes";
 import { useToast } from "@/hooks/use-toast";
 
-interface Initiative {
+interface Idea {
   id: number;
   name: string;
   targetCategory: string;
@@ -15,7 +15,7 @@ interface Initiative {
   createdAt?: Date;
 }
 
-export default function Activities() {
+export default function Ideas() {
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -26,12 +26,12 @@ export default function Activities() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
-  const initiativesQuery = useQuery({
+  const ideasQuery = useQuery({
     queryKey: [api.initiatives.list.path],
     queryFn: async () => {
       const res = await fetch(api.initiatives.list.path, { credentials: "include" });
-      if (!res.ok) throw new Error("Failed to fetch initiatives");
-      return res.json() as Promise<Initiative[]>;
+      if (!res.ok) throw new Error("Failed to fetch ideas");
+      return res.json() as Promise<Idea[]>;
     },
   });
 
@@ -43,14 +43,14 @@ export default function Activities() {
         body: JSON.stringify(data),
         credentials: "include",
       });
-      if (!res.ok) throw new Error("Failed to create initiative");
+      if (!res.ok) throw new Error("Failed to create idea");
       return res.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [api.initiatives.list.path] });
       toast({
-        title: "تم إضافة المبادرة بنجاح",
-        description: "تمت إضافة مبادرتك الجديدة",
+        title: "تم إضافة الفكرة بنجاح",
+        description: "تمت إضافة فكرتك الجديدة",
       });
       setFormData({ name: "", targetCategory: "", goal: "", timePeriod: "" });
       setShowForm(false);
@@ -59,7 +59,7 @@ export default function Activities() {
       toast({
         variant: "destructive",
         title: "خطأ",
-        description: "فشل في إضافة المبادرة",
+        description: "فشل في إضافة الفكرة",
       });
     },
   });
@@ -70,20 +70,20 @@ export default function Activities() {
         method: api.initiatives.delete.method,
         credentials: "include",
       });
-      if (!res.ok) throw new Error("Failed to delete initiative");
+      if (!res.ok) throw new Error("Failed to delete idea");
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [api.initiatives.list.path] });
       toast({
-        title: "تم حذف المبادرة",
-        description: "تم حذف المبادرة بنجاح",
+        title: "تم حذف الفكرة",
+        description: "تم حذف الفكرة بنجاح",
       });
     },
     onError: () => {
       toast({
         variant: "destructive",
         title: "خطأ",
-        description: "فشل في حذف المبادرة",
+        description: "فشل في حذف الفكرة",
       });
     },
   });
@@ -109,10 +109,10 @@ export default function Activities() {
             className="text-center max-w-3xl mx-auto"
           >
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-display text-foreground mb-6">
-              الأنشطة الإبداعية
+              الأفكار الإبداعية
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
-              شارك مبادراتك وأنشطتك الإبداعية مع المنصة وأثر في مجتمعك
+              شارك أفكارك الإبداعية مع المنصة والمجتمع وأثر في مستقبلك
             </p>
           </motion.div>
         </div>
@@ -121,7 +121,7 @@ export default function Activities() {
       {/* Main Content */}
       <section className="py-20">
         <div className="container mx-auto px-4">
-          {/* Add Initiative Button */}
+          {/* Add Idea Button */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -133,11 +133,11 @@ export default function Activities() {
               className="flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-primary to-primary/80 text-white font-bold shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 transition-all duration-200"
             >
               <Plus className="w-5 h-5" />
-              إضافة مبادرة
+              إضافة فكرة
             </button>
           </motion.div>
 
-          {/* Add Initiative Form */}
+          {/* Add Idea Form */}
           {showForm && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -145,12 +145,12 @@ export default function Activities() {
               exit={{ opacity: 0, y: -20 }}
               className="bg-gradient-to-br from-primary/5 to-secondary/5 rounded-2xl p-8 border border-border/50 mb-12"
             >
-              <h2 className="text-2xl font-bold font-display text-foreground mb-6">إضافة مبادرة</h2>
+              <h2 className="text-2xl font-bold font-display text-foreground mb-6">إضافة فكرة إبداعية</h2>
               
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
                   <label className="block text-sm font-medium text-foreground/80 mb-2">
-                    اسم المبادرة
+                    اسم الفكرة
                   </label>
                   <input
                     type="text"
@@ -159,7 +159,7 @@ export default function Activities() {
                     onChange={handleChange}
                     required
                     className="w-full px-4 py-3 rounded-lg bg-background/50 border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
-                    placeholder="ادخل اسم المبادرة"
+                    placeholder="ادخل اسم الفكرة"
                     dir="rtl"
                   />
                 </div>
@@ -185,7 +185,7 @@ export default function Activities() {
 
                 <div>
                   <label className="block text-sm font-medium text-foreground/80 mb-2">
-                    هدف المبادرة
+                    وصف الفكرة
                   </label>
                   <textarea
                     name="goal"
@@ -194,14 +194,14 @@ export default function Activities() {
                     required
                     rows={4}
                     className="w-full px-4 py-3 rounded-lg bg-background/50 border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none resize-none"
-                    placeholder="اشرح الهدف من المبادرة..."
+                    placeholder="اشرح فكرتك الإبداعية..."
                     dir="rtl"
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-foreground/80 mb-2">
-                    الفترة الزمنية
+                    الفترة الزمنية للتنفيذ
                   </label>
                   <input
                     type="text"
@@ -221,7 +221,7 @@ export default function Activities() {
                     disabled={createMutation.isPending}
                     className="flex-1 py-3.5 rounded-lg bg-gradient-to-r from-primary to-primary/80 text-white font-bold shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
                   >
-                    {createMutation.isPending ? "جاري الحفظ..." : "حفظ المبادرة"}
+                    {createMutation.isPending ? "جاري الحفظ..." : "حفظ الفكرة"}
                   </button>
                   <button
                     type="button"
@@ -235,17 +235,17 @@ export default function Activities() {
             </motion.div>
           )}
 
-          {/* Initiatives List */}
-          {initiativesQuery.isLoading ? (
+          {/* Ideas List */}
+          {ideasQuery.isLoading ? (
             <div className="text-center py-12">
               <div className="inline-block w-8 h-8 border-4 border-primary/30 border-t-primary rounded-full animate-spin" />
               <p className="text-muted-foreground mt-4">جاري التحميل...</p>
             </div>
-          ) : initiativesQuery.data && initiativesQuery.data.length > 0 ? (
+          ) : ideasQuery.data && ideasQuery.data.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {initiativesQuery.data.map((initiative, i) => (
+              {ideasQuery.data.map((idea, i) => (
                 <motion.div
-                  key={initiative.id}
+                  key={idea.id}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -257,31 +257,31 @@ export default function Activities() {
                       <Lightbulb className="w-5 h-5 text-primary" />
                     </div>
                     <button
-                      onClick={() => deleteMutation.mutate(initiative.id)}
+                      onClick={() => deleteMutation.mutate(idea.id)}
                       disabled={deleteMutation.isPending}
                       className="p-2 rounded-lg text-destructive hover:bg-destructive/10 transition-colors opacity-0 group-hover:opacity-100"
-                      title="حذف المبادرة"
+                      title="حذف الفكرة"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
 
-                  <h3 className="text-lg font-bold text-foreground mb-3">{initiative.name}</h3>
+                  <h3 className="text-lg font-bold text-foreground mb-3">{idea.name}</h3>
 
                   <div className="space-y-3">
                     <div>
                       <p className="text-xs text-muted-foreground font-medium mb-1">الفئة المستهدفة</p>
-                      <p className="text-sm text-foreground">{initiative.targetCategory}</p>
+                      <p className="text-sm text-foreground">{idea.targetCategory}</p>
                     </div>
 
                     <div>
-                      <p className="text-xs text-muted-foreground font-medium mb-1">الهدف</p>
-                      <p className="text-sm text-foreground line-clamp-2">{initiative.goal}</p>
+                      <p className="text-xs text-muted-foreground font-medium mb-1">الوصف</p>
+                      <p className="text-sm text-foreground line-clamp-2">{idea.goal}</p>
                     </div>
 
                     <div>
                       <p className="text-xs text-muted-foreground font-medium mb-1">الفترة الزمنية</p>
-                      <p className="text-sm text-foreground">{initiative.timePeriod}</p>
+                      <p className="text-sm text-foreground">{idea.timePeriod}</p>
                     </div>
                   </div>
                 </motion.div>
@@ -294,12 +294,12 @@ export default function Activities() {
               className="text-center py-16 bg-muted/20 rounded-xl border border-border/50"
             >
               <Lightbulb className="w-16 h-16 text-muted-foreground/30 mx-auto mb-4" />
-              <p className="text-muted-foreground text-lg mb-6">لم تتم إضافة أي مبادرات بعد</p>
+              <p className="text-muted-foreground text-lg mb-6">لم تتم إضافة أي أفكار بعد</p>
               <button
                 onClick={() => setShowForm(true)}
                 className="px-6 py-3 rounded-lg bg-primary text-white font-medium hover:bg-primary/90 transition-colors"
               >
-                أضف مبادرتك الآن
+                أضف فكرتك الآن
               </button>
             </motion.div>
           )}

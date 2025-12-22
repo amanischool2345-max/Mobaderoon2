@@ -7,7 +7,7 @@ import Home from "@/pages/home";
 import AuthPage from "@/pages/auth";
 import About from "@/pages/about";
 import Contact from "@/pages/contact";
-import Activities from "@/pages/activities";
+import Ideas from "@/pages/ideas";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -17,7 +17,7 @@ function Router() {
       <Route path="/auth" component={AuthPage} />
       <Route path="/about" component={About} />
       <Route path="/contact" component={Contact} />
-      <Route path="/activities" component={Activities} />
+      <Route path="/ideas" component={Ideas} />
       {/* Fallback to 404 */}
       <Route component={NotFound} />
     </Switch>
