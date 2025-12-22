@@ -177,11 +177,9 @@ export default function Activities() {
                     dir="rtl"
                   >
                     <option value="">اختر الفئة المستهدفة</option>
-                    <option value="طلاب">طلاب</option>
-                    <option value="طالبات">طالبات</option>
-                    <option value="الجميع">الجميع</option>
-                    <option value="الموهوبين">الموهوبين</option>
-                    <option value="المهتمين بالقيادة">المهتمين بالقيادة</option>
+                    <option value="ابتدائي">ابتدائي</option>
+                    <option value="اساسي">اساسي</option>
+                    <option value="ثانوي">ثانوي</option>
                   </select>
                 </div>
 
