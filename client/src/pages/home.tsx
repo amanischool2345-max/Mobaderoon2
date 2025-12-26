@@ -2,6 +2,7 @@ import { Layout } from "@/components/Layout";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { ArrowLeft, Star, Lightbulb, Users, Trophy } from "lucide-react";
+import heroImage from "@assets/generated_images/arab_students_with_creative_board.png";
 
 export default function Home() {
   return (
@@ -55,9 +56,9 @@ export default function Home() {
             >
               <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-secondary/20 rounded-full blur-3xl opacity-50 animate-pulse" />
               <img 
-                src="https://mobaderoon.my.canva.site/_assets/media/09112a5a3d02c547ecb92fb30fa04a5e.png"
+                src={heroImage}
                 alt="طلاب مبادرون"
-                className="relative z-10 w-full h-auto drop-shadow-2xl animate-float"
+                className="relative z-10 w-full h-auto drop-shadow-2xl animate-float rounded-2xl"
               />
             </motion.div>
           </div>
