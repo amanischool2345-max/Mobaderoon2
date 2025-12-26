@@ -2,7 +2,7 @@ import { Layout } from "@/components/Layout";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { ArrowLeft, Star, Lightbulb, Users, Trophy } from "lucide-react";
-import heroImage from "@assets/generated_images/arab_students_with_creative_board.png";
+import heroImage from "@assets/Gemini_Generated_Image_ne3hfzne3hfzne3h_1766749688875.png";
 
 export default function Home() {
   return (
