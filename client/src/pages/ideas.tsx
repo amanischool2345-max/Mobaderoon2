@@ -109,10 +109,10 @@ export default function Ideas() {
             className="text-center max-w-3xl mx-auto"
           >
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-display text-foreground mb-6">
-              الأفكار الإبداعية
+              أفكار إبداعية
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
-              شارك أفكارك الإبداعية مع المنصة والمجتمع وأثر في مستقبلك
+              مساحة حرة لطرح الأفكار ومناقشتها وتطويرها
             </p>
           </motion.div>
         </div>

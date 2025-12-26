@@ -43,6 +43,24 @@ export async function registerRoutes(
     }
   });
 
+  app.get("/api/discussions", async (req, res) => {
+    const discussionsList = await storage.getDiscussions();
+    res.json(discussionsList);
+  });
+
+  app.post("/api/discussions", async (req, res) => {
+    try {
+      const { name, message } = req.body;
+      if (!name || !message) {
+        return res.status(400).json({ message: "Name and message are required" });
+      }
+      const discussion = await storage.createDiscussion({ name, message });
+      res.status(201).json(discussion);
+    } catch (err) {
+      res.status(500).json({ message: "Failed to create discussion" });
+    }
+  });
+
   app.get("/api/ping", (req, res) => {
     res.json({ message: "pong" });
   });

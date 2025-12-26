@@ -79,7 +79,7 @@ export default function Activities() {
               الأنشطة الإبداعية
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
-              مساحة حرة لطرح الأفكار ومناقشتها وتطويرها مع الآخرين
+              شارك مبادراتك وأنشطتك الإبداعية مع المنصة وأثر في مجتمعك
             </p>
           </motion.div>
         </div>
