@@ -114,7 +114,7 @@ export default function Activities() {
             className="text-center max-w-3xl mx-auto"
           >
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-display text-foreground mb-6">
-              مبادرتي فيديو
+              معرض الفيديوهات
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
               وثق مبادراتك الإبداعية من خلال الفيديو وشاركها مع المجتمع

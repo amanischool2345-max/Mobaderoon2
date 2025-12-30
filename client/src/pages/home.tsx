@@ -82,7 +82,7 @@ export default function Home() {
               },
               { 
                 icon: <Video className="w-8 h-8 text-primary" />,
-                title: "مبادرتي فيديو", 
+                title: "معرض الفيديوهات", 
                 desc: "توثيق المبادرات الطلابية من خلال الفيديو" 
               },
               { 
@@ -121,7 +121,7 @@ export default function Home() {
             </Link>
             <Link href="/activities">
               <button className="px-8 py-4 rounded-xl bg-secondary text-white font-bold text-lg shadow-lg shadow-secondary/25 hover:shadow-xl hover:shadow-secondary/30 hover:-translate-y-1 transition-all duration-300">
-                مبادرتي فيديو
+                معرض الفيديوهات
               </button>
             </Link>
           </div>
