@@ -70,19 +70,19 @@ export default function Contact() {
                   icon: <MapPin className="w-6 h-6 text-primary" />,
                   title: "العنوان",
                   content: "مدرسة الأميرة عالية الثانوية",
-                  subtext: "الرياض، المملكة العربية السعودية"
+                  subtext: "عمان، الأردن"
                 },
                 {
                   icon: <Mail className="w-6 h-6 text-secondary" />,
                   title: "البريد الإلكتروني",
-                  content: "info@mobaderoon.edu.sa",
+                  content: "info@mobaderoon.edu.jo",
                   subtext: "نرد على رسائلك خلال 24 ساعة"
                 },
                 {
                   icon: <Phone className="w-6 h-6 text-purple-500" />,
                   title: "الهاتف",
-                  content: "+966 11 XXXX XXXX",
-                  subtext: "ساعات العمل: السبت - الخميس (8 صباحاً - 4 مساءً)"
+                  content: "+962 6 XXXX XXXX",
+                  subtext: "ساعات العمل: الأحد - الخميس (8 صباحاً - 2 مساءً)"
                 },
                 {
                   icon: <MessageSquare className="w-6 h-6 text-amber-500" />,
