@@ -1,7 +1,7 @@
 import { Layout } from "@/components/Layout";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
-import { ArrowLeft, Star, Lightbulb, Users, Trophy } from "lucide-react";
+import { ArrowLeft, Star, Lightbulb, Video, Trophy } from "lucide-react";
 import heroImage from "@assets/Gemini_Generated_Image_ne3hfzne3hfzne3h_1766749688875.png";
 
 export default function Home() {
@@ -81,9 +81,9 @@ export default function Home() {
                 desc: "مساحة حرة لطرح الأفكار ومناقشتها وتطويرها" 
               },
               { 
-                icon: <Users className="w-8 h-8 text-primary" />,
-                title: "عمل جماعي", 
-                desc: "بناء فرق عمل متكاملة لتنفيذ المبادرات" 
+                icon: <Video className="w-8 h-8 text-primary" />,
+                title: "مبادرتي فيديو", 
+                desc: "توثيق المبادرات الطلابية من خلال الفيديو" 
               },
               { 
                 icon: <Trophy className="w-8 h-8 text-purple-500" />,
@@ -121,7 +121,7 @@ export default function Home() {
             </Link>
             <Link href="/activities">
               <button className="px-8 py-4 rounded-xl bg-secondary text-white font-bold text-lg shadow-lg shadow-secondary/25 hover:shadow-xl hover:shadow-secondary/30 hover:-translate-y-1 transition-all duration-300">
-                الأنشطة الإبداعية
+                مبادرتي فيديو
               </button>
             </Link>
           </div>

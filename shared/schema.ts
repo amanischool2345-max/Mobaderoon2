@@ -14,6 +14,7 @@ export const initiatives = pgTable("initiatives", {
   targetCategory: text("target_category").notNull(),
   goal: text("goal").notNull(),
   timePeriod: text("time_period").notNull(),
+  videoUrl: text("video_url"),
   createdAt: timestamp("created_at").defaultNow(),
 });
 

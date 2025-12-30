@@ -33,7 +33,7 @@ export class DatabaseStorage implements IStorage {
     return await db.select().from(initiatives).orderBy(desc(initiatives.createdAt));
   }
 
-  async createInitiative(initiative: InsertInitiative): Promise<Initiative> {
+  async createInitiative(initiative: InsertInitiative & { videoUrl?: string }): Promise<Initiative> {
     const [newInitiative] = await db.insert(initiatives).values(initiative).returning();
     return newInitiative;
   }

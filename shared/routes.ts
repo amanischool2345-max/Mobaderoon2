@@ -60,6 +60,7 @@ export const api = {
           targetCategory: z.string(), 
           goal: z.string(), 
           timePeriod: z.string(),
+          videoUrl: z.string().optional().nullable(),
           createdAt: z.date().optional(),
         })),
       },
@@ -67,7 +68,9 @@ export const api = {
     create: {
       method: "POST" as const,
       path: "/api/initiatives",
-      input: insertInitiativeSchema,
+      input: insertInitiativeSchema.extend({
+        videoUrl: z.string().url().optional().or(z.literal("")),
+      }),
       responses: {
         201: z.object({ 
           id: z.number(), 
@@ -75,6 +78,7 @@ export const api = {
           targetCategory: z.string(), 
           goal: z.string(), 
           timePeriod: z.string(),
+          videoUrl: z.string().optional().nullable(),
           createdAt: z.date().optional(),
         }),
         400: errorSchemas.validation,

@@ -34,7 +34,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               الأفكار الإبداعية
             </Link>
             <Link href="/activities" className={`text-sm font-medium transition-colors hover:text-primary ${location === '/activities' ? 'text-primary' : 'text-muted-foreground'}`}>
-              الأنشطة الإبداعية
+              مبادرتي فيديو
             </Link>
             <Link href="/about" className={`text-sm font-medium transition-colors hover:text-primary ${location === '/about' ? 'text-primary' : 'text-muted-foreground'}`}>
               من نحن
@@ -100,7 +100,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 الأفكار الإبداعية
               </Link>
               <Link href="/activities" onClick={() => setIsMobileMenuOpen(false)} className="py-2 text-lg font-medium text-foreground">
-                الأنشطة الإبداعية
+                مبادرتي فيديو
               </Link>
               <Link href="/about" onClick={() => setIsMobileMenuOpen(false)} className="py-2 text-lg font-medium text-foreground">
                 من نحن

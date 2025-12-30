@@ -1,191 +1,282 @@
 import { Layout } from "@/components/Layout";
 import { motion } from "framer-motion";
-import { Send, MessageCircle } from "lucide-react";
+import { Plus, Trash2, Video, Play } from "lucide-react";
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@shared/routes";
 import { useToast } from "@/hooks/use-toast";
 
-interface Discussion {
+interface Initiative {
   id: number;
   name: string;
-  message: string;
+  targetCategory: string;
+  goal: string;
+  timePeriod: string;
+  videoUrl?: string;
   createdAt?: Date;
 }
 
 export default function Activities() {
-  const [newMessage, setNewMessage] = useState("");
-  const [newName, setNewName] = useState("");
+  const [showForm, setShowForm] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    targetCategory: "",
+    goal: "",
+    timePeriod: "",
+    videoUrl: "",
+  });
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
-  const discussionsQuery = useQuery({
-    queryKey: ["discussions"],
+  const initiativesQuery = useQuery({
+    queryKey: [api.initiatives.list.path],
     queryFn: async () => {
-      const res = await fetch("/api/discussions", { credentials: "include" });
-      if (!res.ok) throw new Error("Failed to fetch discussions");
-      return res.json() as Promise<Discussion[]>;
+      const res = await fetch(api.initiatives.list.path, { credentials: "include" });
+      if (!res.ok) throw new Error("Failed to fetch initiatives");
+      return res.json() as Promise<Initiative[]>;
     },
   });
 
   const createMutation = useMutation({
-    mutationFn: async (data: { name: string; message: string }) => {
-      const res = await fetch("/api/discussions", {
-        method: "POST",
+    mutationFn: async (data: typeof formData) => {
+      const res = await fetch(api.initiatives.create.path, {
+        method: api.initiatives.create.method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
         credentials: "include",
       });
-      if (!res.ok) throw new Error("Failed to create discussion");
+      if (!res.ok) throw new Error("Failed to create video initiative");
       return res.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["discussions"] });
+      queryClient.invalidateQueries({ queryKey: [api.initiatives.list.path] });
       toast({
-        title: "تم إرسال رسالتك بنجاح",
-        description: "شكراً لمشاركتك في النقاش",
+        title: "تم إضافة الفيديو بنجاح",
+        description: "تمت إضافة مبادرتك المرئية الجديدة",
       });
-      setNewMessage("");
-      setNewName("");
+      setFormData({ name: "", targetCategory: "", goal: "", timePeriod: "", videoUrl: "" });
+      setShowForm(false);
     },
     onError: () => {
       toast({
         variant: "destructive",
         title: "خطأ",
-        description: "فشل في إرسال الرسالة",
+        description: "فشل في إضافة الفيديو",
+      });
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: async (id: number) => {
+      const res = await fetch(api.initiatives.delete.path.replace(":id", String(id)), {
+        method: api.initiatives.delete.method,
+        credentials: "include",
+      });
+      if (!res.ok) throw new Error("Failed to delete initiative");
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [api.initiatives.list.path] });
+      toast({
+        title: "تم الحذف",
+        description: "تم حذف المبادرة بنجاح",
       });
     },
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (newName.trim() && newMessage.trim()) {
-      createMutation.mutate({ name: newName, message: newMessage });
+    createMutation.mutate(formData);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  // Helper to get YouTube embed URL or similar if needed
+  const getEmbedUrl = (url: string) => {
+    if (!url) return null;
+    if (url.includes('youtube.com/watch?v=')) {
+      return url.replace('watch?v=', 'embed/');
     }
+    if (url.includes('youtu.be/')) {
+      return url.replace('youtu.be/', 'youtube.com/embed/');
+    }
+    return url;
   };
 
   return (
     <Layout>
-      {/* Hero Section */}
       <section className="relative overflow-hidden pt-20 pb-12 md:pt-32 md:pb-20 bg-gradient-to-b from-primary/5 to-transparent">
         <div className="container mx-auto px-4">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
             className="text-center max-w-3xl mx-auto"
           >
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-display text-foreground mb-6">
-              الأنشطة الإبداعية
+              مبادرتي فيديو
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
-              شارك مبادراتك وأنشطتك الإبداعية مع المنصة وأثر في مجتمعك
+              وثق مبادراتك الإبداعية من خلال الفيديو وشاركها مع المجتمع
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* Main Content */}
       <section className="py-20">
         <div className="container mx-auto px-4">
-          {/* New Discussion Form */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="bg-gradient-to-br from-primary/5 to-secondary/5 rounded-2xl p-8 border border-border/50 mb-12"
+            className="mb-12"
           >
-            <h2 className="text-2xl font-bold font-display text-foreground mb-6">شارك فكرتك</h2>
-            
-            <form onSubmit={handleSubmit} className="space-y-5">
-              <div>
-                <label className="block text-sm font-medium text-foreground/80 mb-2">
-                  اسمك
-                </label>
-                <input
-                  type="text"
-                  value={newName}
-                  onChange={(e) => setNewName(e.target.value)}
-                  required
-                  className="w-full px-4 py-3 rounded-lg bg-background/50 border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
-                  placeholder="ادخل اسمك"
-                  dir="rtl"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-foreground/80 mb-2">
-                  الفكرة أو التعليق
-                </label>
-                <textarea
-                  value={newMessage}
-                  onChange={(e) => setNewMessage(e.target.value)}
-                  required
-                  rows={5}
-                  className="w-full px-4 py-3 rounded-lg bg-background/50 border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none resize-none"
-                  placeholder="شارك فكرتك أو تعليقك..."
-                  dir="rtl"
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={createMutation.isPending}
-                className="w-full py-3.5 rounded-lg bg-gradient-to-r from-primary to-primary/80 text-white font-bold shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center gap-2"
-              >
-                <Send className="w-4 h-4" />
-                {createMutation.isPending ? "جاري الإرسال..." : "إرسال"}
-              </button>
-            </form>
+            <button
+              onClick={() => setShowForm(!showForm)}
+              className="flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-primary to-primary/80 text-white font-bold shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 transition-all duration-200"
+            >
+              <Plus className="w-5 h-5" />
+              إضافة فيديو المبادرة
+            </button>
           </motion.div>
 
-          {/* Discussions List */}
-          <div className="space-y-4">
-            <h2 className="text-2xl font-bold font-display text-foreground mb-6">النقاشات والأفكار</h2>
-            
-            {discussionsQuery.isLoading ? (
-              <div className="text-center py-12">
-                <div className="inline-block w-8 h-8 border-4 border-primary/30 border-t-primary rounded-full animate-spin" />
-                <p className="text-muted-foreground mt-4">جاري التحميل...</p>
-              </div>
-            ) : discussionsQuery.data && discussionsQuery.data.length > 0 ? (
-              <div className="space-y-4">
-                {discussionsQuery.data.map((discussion, i) => (
-                  <motion.div
-                    key={discussion.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.1 }}
-                    className="bg-background rounded-xl p-6 border border-border/50 hover:border-primary/20 transition-all"
+          {showForm && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-gradient-to-br from-primary/5 to-secondary/5 rounded-2xl p-8 border border-border/50 mb-12"
+            >
+              <h2 className="text-2xl font-bold font-display text-foreground mb-6">إضافة فيديو جديد</h2>
+              
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <div>
+                  <label className="block text-sm font-medium text-foreground/80 mb-2">اسم المبادرة</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 rounded-lg bg-background/50 border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+                    placeholder="ادخل اسم المبادرة"
+                    dir="rtl"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-foreground/80 mb-2">الفئة المستهدفة</label>
+                  <select
+                    name="targetCategory"
+                    value={formData.targetCategory}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 rounded-lg bg-background/50 border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+                    dir="rtl"
                   >
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                        <MessageCircle className="w-6 h-6 text-primary" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h3 className="text-lg font-bold text-foreground">{discussion.name}</h3>
-                        <p className="text-sm text-muted-foreground mt-1">
-                          {discussion.createdAt && new Date(discussion.createdAt).toLocaleDateString('ar-SA')}
-                        </p>
-                        <p className="text-foreground mt-3 leading-relaxed break-words" dir="rtl">{discussion.message}</p>
-                      </div>
+                    <option value="">اختر الفئة المستهدفة</option>
+                    <option value="ابتدائي">ابتدائي</option>
+                    <option value="اساسي">اساسي</option>
+                    <option value="ثانوي">ثانوي</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-foreground/80 mb-2">رابط الفيديو (YouTube/Drive)</label>
+                  <input
+                    type="url"
+                    name="videoUrl"
+                    value={formData.videoUrl}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 rounded-lg bg-background/50 border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+                    placeholder="ضع رابط الفيديو هنا"
+                    dir="ltr"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-foreground/80 mb-2">وصف مختصر</label>
+                  <textarea
+                    name="goal"
+                    value={formData.goal}
+                    onChange={handleChange}
+                    required
+                    rows={3}
+                    className="w-full px-4 py-3 rounded-lg bg-background/50 border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none resize-none"
+                    placeholder="وصف للفيديو والمبادرة..."
+                    dir="rtl"
+                  />
+                </div>
+
+                <div className="flex gap-4 pt-4">
+                  <button
+                    type="submit"
+                    disabled={createMutation.isPending}
+                    className="flex-1 py-3.5 rounded-lg bg-primary text-white font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all"
+                  >
+                    {createMutation.isPending ? "جاري الحفظ..." : "حفظ المبادرة"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowForm(false)}
+                    className="flex-1 py-3.5 rounded-lg bg-muted text-foreground font-bold hover:bg-muted/80 transition-all"
+                  >
+                    إلغاء
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          )}
+
+          {initiativesQuery.isLoading ? (
+            <div className="text-center py-12">
+              <div className="inline-block w-8 h-8 border-4 border-primary/30 border-t-primary rounded-full animate-spin" />
+            </div>
+          ) : initiativesQuery.data && initiativesQuery.data.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {initiativesQuery.data.map((initiative, i) => (
+                <motion.div
+                  key={initiative.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  className="bg-background rounded-xl overflow-hidden border border-border/50 hover:border-primary/20 transition-all group shadow-sm"
+                >
+                  <div className="aspect-video bg-muted relative flex items-center justify-center overflow-hidden">
+                    {initiative.videoUrl ? (
+                      <iframe
+                        src={getEmbedUrl(initiative.videoUrl) || ''}
+                        className="w-full h-full"
+                        allowFullScreen
+                      />
+                    ) : (
+                      <Video className="w-12 h-12 text-muted-foreground/30" />
+                    )}
+                  </div>
+                  <div className="p-5">
+                    <div className="flex justify-between items-start mb-2">
+                      <h3 className="font-bold text-foreground">{initiative.name}</h3>
+                      <button
+                        onClick={() => deleteMutation.mutate(initiative.id)}
+                        className="p-1.5 rounded-md text-destructive hover:bg-destructive/10 transition-colors opacity-0 group-hover:opacity-100"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
                     </div>
-                  </motion.div>
-                ))}
-              </div>
-            ) : (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-center py-16 bg-muted/20 rounded-xl border border-border/50"
-              >
-                <MessageCircle className="w-16 h-16 text-muted-foreground/30 mx-auto mb-4" />
-                <p className="text-muted-foreground text-lg mb-6">لم يتم إضافة أي نقاشات بعد</p>
-                <p className="text-muted-foreground text-sm">كن أول من يشارك فكرته!</p>
-              </motion.div>
-            )}
-          </div>
+                    <p className="text-sm text-muted-foreground mb-4 line-clamp-2">{initiative.goal}</p>
+                    <div className="flex items-center gap-2 text-xs font-medium text-primary">
+                      <span className="px-2 py-1 rounded bg-primary/10">{initiative.targetCategory}</span>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-16 bg-muted/20 rounded-xl border border-dashed border-border">
+              <Video className="w-16 h-16 text-muted-foreground/30 mx-auto mb-4" />
+              <p className="text-muted-foreground">لا يوجد فيديوهات مبادرات بعد</p>
+            </div>
+          )}
         </div>
       </section>
     </Layout>
