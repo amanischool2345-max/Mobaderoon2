@@ -124,6 +124,11 @@ export default function Home() {
                 معرض الفيديوهات
               </button>
             </Link>
+            <Link href="/wheel">
+              <button className="px-8 py-4 rounded-xl bg-purple-600 text-white font-bold text-lg shadow-lg shadow-purple-600/25 hover:shadow-xl hover:shadow-purple-600/30 hover:-translate-y-1 transition-all duration-300">
+                عجلة المبادرات
+              </button>
+            </Link>
           </div>
         </div>
       </section>

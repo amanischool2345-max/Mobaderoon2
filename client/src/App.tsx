@@ -9,6 +9,7 @@ import About from "@/pages/about";
 import Contact from "@/pages/contact";
 import Ideas from "@/pages/ideas";
 import Activities from "@/pages/activities";
+import Wheel from "@/pages/wheel";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -20,6 +21,7 @@ function Router() {
       <Route path="/contact" component={Contact} />
       <Route path="/ideas" component={Ideas} />
       <Route path="/activities" component={Activities} />
+      <Route path="/wheel" component={Wheel} />
       {/* Fallback to 404 */}
       <Route component={NotFound} />
     </Switch>

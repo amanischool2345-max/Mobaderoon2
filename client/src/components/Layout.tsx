@@ -36,6 +36,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <Link href="/activities" className={`text-sm font-medium transition-colors hover:text-primary ${location === '/activities' ? 'text-primary' : 'text-muted-foreground'}`}>
               معرض الفيديوهات
             </Link>
+            <Link href="/wheel" className={`text-sm font-medium transition-colors hover:text-primary ${location === '/wheel' ? 'text-primary' : 'text-muted-foreground'}`}>
+              عجلة المبادرات
+            </Link>
             <Link href="/about" className={`text-sm font-medium transition-colors hover:text-primary ${location === '/about' ? 'text-primary' : 'text-muted-foreground'}`}>
               من نحن
             </Link>
@@ -101,6 +104,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
               </Link>
               <Link href="/activities" onClick={() => setIsMobileMenuOpen(false)} className="py-2 text-lg font-medium text-foreground">
                 معرض الفيديوهات
+              </Link>
+              <Link href="/wheel" onClick={() => setIsMobileMenuOpen(false)} className="py-2 text-lg font-medium text-foreground">
+                عجلة المبادرات
               </Link>
               <Link href="/about" onClick={() => setIsMobileMenuOpen(false)} className="py-2 text-lg font-medium text-foreground">
                 من نحن
