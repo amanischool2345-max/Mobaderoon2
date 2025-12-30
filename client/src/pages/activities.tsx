@@ -56,9 +56,11 @@ export default function Activities() {
       if (!res.ok) throw new Error("Upload failed");
       const { url } = await res.json();
       setFormData(prev => ({ ...prev, videoUrl: url }));
+      
+      // Auto-submit or enable save button is already handled by the state update
       toast({
         title: "تم رفع الفيديو",
-        description: "يمكنك الآن حفظ المبادرة",
+        description: "تم رفع الملف بنجاح، يمكنك الآن الضغط على حفظ المبادرة",
       });
     } catch (err) {
       toast({
@@ -241,19 +243,28 @@ export default function Activities() {
                         ref={fileInputRef}
                         className="hidden"
                       />
-                      <button
-                        type="button"
-                        onClick={() => fileInputRef.current?.click()}
-                        disabled={isUploading}
-                        className="w-full px-4 py-3 rounded-lg bg-background/50 border border-dashed border-border hover:border-primary transition-all flex items-center justify-center gap-2 text-muted-foreground hover:text-primary"
-                      >
-                        {isUploading ? (
-                          <div className="w-4 h-4 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
-                        ) : (
-                          <Upload className="w-4 h-4" />
+                      <div className="flex flex-col gap-2">
+                        <button
+                          type="button"
+                          onClick={() => fileInputRef.current?.click()}
+                          disabled={isUploading}
+                          className={`w-full px-4 py-3 rounded-lg bg-background/50 border border-dashed transition-all flex items-center justify-center gap-2 ${
+                            formData.videoUrl && !formData.videoUrl.includes('youtube') && !formData.videoUrl.includes('drive')
+                              ? 'border-primary text-primary bg-primary/5'
+                              : 'border-border text-muted-foreground hover:text-primary hover:border-primary'
+                          }`}
+                        >
+                          {isUploading ? (
+                            <div className="w-4 h-4 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
+                          ) : (
+                            <Upload className="w-4 h-4" />
+                          )}
+                          {isUploading ? "جاري الرفع..." : formData.videoUrl && !formData.videoUrl.includes('youtube') ? "تم اختيار ملف" : "اختر ملف فيديو"}
+                        </button>
+                        {formData.videoUrl && !formData.videoUrl.includes('youtube') && !formData.videoUrl.includes('drive') && (
+                          <span className="text-[10px] text-primary text-center">تم رفع الفيديو بنجاح ✓</span>
                         )}
-                        {isUploading ? "جاري الرفع..." : "اختر ملف فيديو"}
-                      </button>
+                      </div>
                     </div>
                   </div>
                 </div>
