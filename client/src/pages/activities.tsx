@@ -219,23 +219,20 @@ export default function Activities() {
                   </select>
                 </div>
 
-                <div className="space-y-4">
-                  <label className="block text-sm font-medium text-foreground/80 mb-2">مصدر الفيديو</label>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <span className="text-xs text-muted-foreground">خيار 1: رابط (YouTube/Drive)</span>
+                <div>
+                  <label className="block text-sm font-medium text-foreground/80 mb-2">رابط الفيديو أو الرفع من الجهاز</label>
+                  <div className="flex flex-col gap-4">
+                    <div className="flex gap-2">
                       <input
                         type="url"
                         name="videoUrl"
                         value={formData.videoUrl}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 rounded-lg bg-background/50 border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
-                        placeholder="ضع رابط الفيديو هنا"
+                        required
+                        className="flex-1 px-4 py-3 rounded-lg bg-background/50 border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+                        placeholder="رابط (YouTube/Drive) أو سيظهر رابط الملف المرفوع هنا"
                         dir="ltr"
                       />
-                    </div>
-                    <div className="space-y-2">
-                      <span className="text-xs text-muted-foreground">خيار 2: رفع من الجهاز</span>
                       <input
                         type="file"
                         accept="video/*"
@@ -243,29 +240,27 @@ export default function Activities() {
                         ref={fileInputRef}
                         className="hidden"
                       />
-                      <div className="flex flex-col gap-2">
-                        <button
-                          type="button"
-                          onClick={() => fileInputRef.current?.click()}
-                          disabled={isUploading}
-                          className={`w-full px-4 py-3 rounded-lg bg-background/50 border border-dashed transition-all flex items-center justify-center gap-2 ${
-                            formData.videoUrl && !formData.videoUrl.includes('youtube') && !formData.videoUrl.includes('drive')
-                              ? 'border-primary text-primary bg-primary/5'
-                              : 'border-border text-muted-foreground hover:text-primary hover:border-primary'
-                          }`}
-                        >
-                          {isUploading ? (
-                            <div className="w-4 h-4 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
-                          ) : (
-                            <Upload className="w-4 h-4" />
-                          )}
-                          {isUploading ? "جاري الرفع..." : formData.videoUrl && !formData.videoUrl.includes('youtube') ? "تم اختيار ملف" : "اختر ملف فيديو"}
-                        </button>
-                        {formData.videoUrl && !formData.videoUrl.includes('youtube') && !formData.videoUrl.includes('drive') && (
-                          <span className="text-[10px] text-primary text-center">تم رفع الفيديو بنجاح ✓</span>
+                      <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        disabled={isUploading}
+                        className={`px-4 py-3 rounded-lg border border-dashed transition-all flex items-center justify-center gap-2 min-w-[140px] ${
+                          formData.videoUrl && !formData.videoUrl.includes('youtube') && !formData.videoUrl.includes('drive')
+                            ? 'border-primary text-primary bg-primary/5'
+                            : 'border-border text-muted-foreground hover:text-primary hover:border-primary'
+                        }`}
+                      >
+                        {isUploading ? (
+                          <div className="w-4 h-4 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
+                        ) : (
+                          <Upload className="w-4 h-4" />
                         )}
-                      </div>
+                        {isUploading ? "جاري الرفع..." : "رفع من الجهاز"}
+                      </button>
                     </div>
+                    {formData.videoUrl && !formData.videoUrl.includes('youtube') && !formData.videoUrl.includes('drive') && (
+                      <span className="text-xs text-primary">تم رفع الفيديو بنجاح ✓</span>
+                    )}
                   </div>
                 </div>
 
