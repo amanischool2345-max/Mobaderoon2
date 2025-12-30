@@ -4,12 +4,29 @@ import { setupAuth } from "./auth";
 import { storage } from "./storage";
 import { api } from "@shared/routes";
 import { z } from "zod";
+import multer from "multer";
+import { uploadFile } from "./storage";
+
+const upload = multer({ storage: multer.memoryStorage() });
 
 export async function registerRoutes(
   httpServer: Server,
   app: Express,
 ): Promise<Server> {
   setupAuth(app);
+
+  // File upload route
+  app.post("/api/upload", upload.single("file"), async (req, res) => {
+    if (!req.file) {
+      return res.status(400).json({ message: "No file uploaded" });
+    }
+    try {
+      const { url } = await storage.uploadFile(req.file.buffer, req.file.originalname);
+      res.json({ url });
+    } catch (err) {
+      res.status(500).json({ message: "Upload failed" });
+    }
+  });
 
   // Initiatives routes
   app.get(api.initiatives.list.path, async (req, res) => {

@@ -1,7 +1,7 @@
 import { Layout } from "@/components/Layout";
 import { motion } from "framer-motion";
-import { Plus, Trash2, Video, Play } from "lucide-react";
-import { useState } from "react";
+import { Plus, Trash2, Video, Play, Upload } from "lucide-react";
+import { useState, useRef } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@shared/routes";
 import { useToast } from "@/hooks/use-toast";
@@ -13,11 +13,14 @@ interface Initiative {
   goal: string;
   timePeriod: string;
   videoUrl?: string;
+  videoStoragePath?: string;
   createdAt?: Date;
 }
 
 export default function Activities() {
   const [showForm, setShowForm] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [formData, setFormData] = useState({
     name: "",
     targetCategory: "",
@@ -36,6 +39,37 @@ export default function Activities() {
       return res.json() as Promise<Initiative[]>;
     },
   });
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploading(true);
+    const formDataUpload = new FormData();
+    formDataUpload.append("file", file);
+
+    try {
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formDataUpload,
+      });
+      if (!res.ok) throw new Error("Upload failed");
+      const { url } = await res.json();
+      setFormData(prev => ({ ...prev, videoUrl: url }));
+      toast({
+        title: "تم رفع الفيديو",
+        description: "يمكنك الآن حفظ المبادرة",
+      });
+    } catch (err) {
+      toast({
+        variant: "destructive",
+        title: "خطأ في الرفع",
+        description: "فشل رفع الملف إلى الخادم",
+      });
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   const createMutation = useMutation({
     mutationFn: async (data: typeof formData) => {
@@ -100,6 +134,10 @@ export default function Activities() {
     }
     if (url.includes('youtu.be/')) {
       return url.replace('youtu.be/', 'youtube.com/embed/');
+    }
+    // If it's a direct link to a file, we might want to use a <video> tag instead
+    if (url.startsWith('/api/storage/') || url.match(/\.(mp4|webm|ogg)$/i)) {
+      return null; // Return null to trigger <video> tag
     }
     return url;
   };
@@ -179,18 +217,45 @@ export default function Activities() {
                   </select>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-foreground/80 mb-2">رابط الفيديو (YouTube/Drive)</label>
-                  <input
-                    type="url"
-                    name="videoUrl"
-                    value={formData.videoUrl}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 rounded-lg bg-background/50 border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
-                    placeholder="ضع رابط الفيديو هنا"
-                    dir="ltr"
-                  />
+                <div className="space-y-4">
+                  <label className="block text-sm font-medium text-foreground/80 mb-2">مصدر الفيديو</label>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <span className="text-xs text-muted-foreground">خيار 1: رابط (YouTube/Drive)</span>
+                      <input
+                        type="url"
+                        name="videoUrl"
+                        value={formData.videoUrl}
+                        onChange={handleChange}
+                        className="w-full px-4 py-3 rounded-lg bg-background/50 border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+                        placeholder="ضع رابط الفيديو هنا"
+                        dir="ltr"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <span className="text-xs text-muted-foreground">خيار 2: رفع من الجهاز</span>
+                      <input
+                        type="file"
+                        accept="video/*"
+                        onChange={handleFileUpload}
+                        ref={fileInputRef}
+                        className="hidden"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        disabled={isUploading}
+                        className="w-full px-4 py-3 rounded-lg bg-background/50 border border-dashed border-border hover:border-primary transition-all flex items-center justify-center gap-2 text-muted-foreground hover:text-primary"
+                      >
+                        {isUploading ? (
+                          <div className="w-4 h-4 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
+                        ) : (
+                          <Upload className="w-4 h-4" />
+                        )}
+                        {isUploading ? "جاري الرفع..." : "اختر ملف فيديو"}
+                      </button>
+                    </div>
+                  </div>
                 </div>
 
                 <div>
@@ -210,8 +275,8 @@ export default function Activities() {
                 <div className="flex gap-4 pt-4">
                   <button
                     type="submit"
-                    disabled={createMutation.isPending}
-                    className="flex-1 py-3.5 rounded-lg bg-primary text-white font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all"
+                    disabled={createMutation.isPending || isUploading}
+                    className="flex-1 py-3.5 rounded-lg bg-primary text-white font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all disabled:opacity-50"
                   >
                     {createMutation.isPending ? "جاري الحفظ..." : "حفظ المبادرة"}
                   </button>
@@ -244,11 +309,19 @@ export default function Activities() {
                 >
                   <div className="aspect-video bg-muted relative flex items-center justify-center overflow-hidden">
                     {initiative.videoUrl ? (
-                      <iframe
-                        src={getEmbedUrl(initiative.videoUrl) || ''}
-                        className="w-full h-full"
-                        allowFullScreen
-                      />
+                      getEmbedUrl(initiative.videoUrl) ? (
+                        <iframe
+                          src={getEmbedUrl(initiative.videoUrl) || ''}
+                          className="w-full h-full"
+                          allowFullScreen
+                        />
+                      ) : (
+                        <video 
+                          src={initiative.videoUrl} 
+                          controls 
+                          className="w-full h-full object-cover"
+                        />
+                      )
                     ) : (
                       <Video className="w-12 h-12 text-muted-foreground/30" />
                     )}
