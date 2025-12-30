@@ -27,6 +27,31 @@ export async function registerRoutes(
     }
   });
 
+  // Stars routes
+  app.get("/api/stars", async (req, res) => {
+    const starsList = await storage.getStars();
+    res.json(starsList);
+  });
+
+  app.post("/api/stars", async (req, res) => {
+    try {
+      const star = await storage.createStar(req.body);
+      res.status(201).json(star);
+    } catch (err) {
+      res.status(500).json({ message: "Failed to create star" });
+    }
+  });
+
+  app.delete("/api/stars/:id", async (req, res) => {
+    try {
+      const id = Number(req.params.id);
+      await storage.deleteStar(id);
+      res.sendStatus(204);
+    } catch (err) {
+      res.status(500).json({ message: "Failed to delete star" });
+    }
+  });
+
   // Initiatives routes
   app.get(api.initiatives.list.path, async (req, res) => {
     const initiativesList = await storage.getInitiatives();

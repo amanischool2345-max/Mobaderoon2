@@ -19,6 +19,14 @@ export const initiatives = pgTable("initiatives", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+export const stars = pgTable("stars", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  grade: text("grade").notNull(),
+  imageUrl: text("image_url").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 export const discussions = pgTable("discussions", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
@@ -28,11 +36,14 @@ export const discussions = pgTable("discussions", {
 
 export const insertUserSchema = createInsertSchema(users);
 export const insertInitiativeSchema = createInsertSchema(initiatives).omit({ id: true, createdAt: true });
+export const insertStarSchema = createInsertSchema(stars).omit({ id: true, createdAt: true });
 export const insertDiscussionSchema = createInsertSchema(discussions).omit({ id: true, createdAt: true });
 
 export type User = typeof users.$inferSelect;
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type Initiative = typeof initiatives.$inferSelect;
 export type InsertInitiative = z.infer<typeof insertInitiativeSchema>;
+export type Star = typeof stars.$inferSelect;
+export type InsertStar = z.infer<typeof insertStarSchema>;
 export type Discussion = typeof discussions.$inferSelect;
 export type InsertDiscussion = z.infer<typeof insertDiscussionSchema>;

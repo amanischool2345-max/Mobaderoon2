@@ -1,4 +1,4 @@
-import { users, initiatives, discussions, type User, type InsertUser, type Initiative, type InsertInitiative, type Discussion, type InsertDiscussion } from "@shared/schema";
+import { users, initiatives, discussions, stars, type User, type InsertUser, type Initiative, type InsertInitiative, type Discussion, type InsertDiscussion, type Star, type InsertStar } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc } from "drizzle-orm";
 import path from "path";
@@ -13,6 +13,9 @@ export interface IStorage {
   deleteInitiative(id: number): Promise<void>;
   getDiscussions(): Promise<Discussion[]>;
   createDiscussion(discussion: InsertDiscussion): Promise<Discussion>;
+  getStars(): Promise<Star[]>;
+  createStar(star: InsertStar): Promise<Star>;
+  deleteStar(id: number): Promise<void>;
   uploadFile(buffer: Buffer, originalName: string): Promise<{ url: string }>;
 }
 
@@ -52,6 +55,19 @@ export class DatabaseStorage implements IStorage {
   async createDiscussion(discussion: InsertDiscussion): Promise<Discussion> {
     const [newDiscussion] = await db.insert(discussions).values(discussion).returning();
     return newDiscussion;
+  }
+
+  async getStars(): Promise<Star[]> {
+    return await db.select().from(stars).orderBy(desc(stars.createdAt));
+  }
+
+  async createStar(star: InsertStar): Promise<Star> {
+    const [newStar] = await db.insert(stars).values(star).returning();
+    return newStar;
+  }
+
+  async deleteStar(id: number): Promise<void> {
+    await db.delete(stars).where(eq(stars.id, id));
   }
 
   async uploadFile(buffer: Buffer, originalName: string): Promise<{ url: string }> {

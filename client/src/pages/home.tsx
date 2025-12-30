@@ -129,6 +129,11 @@ export default function Home() {
                 عجلة المبادرات
               </button>
             </Link>
+            <Link href="/stars">
+              <button className="px-8 py-4 rounded-xl bg-amber-500 text-white font-bold text-lg shadow-lg shadow-amber-500/25 hover:shadow-xl hover:shadow-amber-500/30 hover:-translate-y-1 transition-all duration-300">
+                مبادرون مميزون
+              </button>
+            </Link>
           </div>
         </div>
       </section>
