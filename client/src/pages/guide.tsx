@@ -185,7 +185,7 @@ export default function InitiativeGuide() {
                 onClick={() => setSelectedInitiative(null)}
                 className="w-full py-4 bg-slate-100 dark:bg-slate-800 text-foreground font-bold rounded-xl hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
               >
-                فهمت ذلك
+                تم
               </button>
             </motion.div>
           </motion.div>
