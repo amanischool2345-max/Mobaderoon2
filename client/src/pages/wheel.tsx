@@ -123,7 +123,7 @@ export default function InitiativeWheel() {
               <motion.div
                 initial={{ opacity: 0, scale: 0.5 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="bg-primary/10 border border-primary/20 rounded-2xl p-8 max-w-lg mx-auto"
+                className="bg-primary/10 border border-primary/20 rounded-2xl p-8 max-w-lg mx-auto mb-8"
               >
                 <Trophy className="w-12 h-12 text-primary mx-auto mb-4" />
                 <h2 className="text-2xl font-bold text-foreground mb-2">المبادرة المختارة:</h2>
@@ -131,6 +131,22 @@ export default function InitiativeWheel() {
               </motion.div>
             )}
           </AnimatePresence>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="mt-8"
+          >
+            <a 
+              href="https://mobaderoon.my.canva.site/#page-4" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-bold text-xl underline underline-offset-8 decoration-2 transition-all hover:scale-105"
+            >
+              اعرف اكثر عن مبادرتك
+            </a>
+          </motion.div>
         </div>
       </section>
     </Layout>
