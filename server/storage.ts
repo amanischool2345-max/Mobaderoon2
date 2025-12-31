@@ -11,6 +11,7 @@ export interface IStorage {
   getInitiatives(): Promise<Initiative[]>;
   createInitiative(initiative: InsertInitiative): Promise<Initiative>;
   deleteInitiative(id: number): Promise<void>;
+  likeInitiative(id: number): Promise<Initiative>;
   getDiscussions(): Promise<Discussion[]>;
   createDiscussion(discussion: InsertDiscussion): Promise<Discussion>;
   getStars(): Promise<Star[]>;
@@ -46,6 +47,17 @@ export class DatabaseStorage implements IStorage {
 
   async deleteInitiative(id: number): Promise<void> {
     await db.delete(initiatives).where(eq(initiatives.id, id));
+  }
+
+  async likeInitiative(id: number): Promise<Initiative> {
+    const [initiative] = await db.select().from(initiatives).where(eq(initiatives.id, id));
+    if (!initiative) throw new Error("Initiative not found");
+    
+    const [updated] = await db.update(initiatives)
+      .set({ likes: initiative.likes + 1 })
+      .where(eq(initiatives.id, id))
+      .returning();
+    return updated;
   }
 
   async getDiscussions(): Promise<Discussion[]> {

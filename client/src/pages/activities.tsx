@@ -14,13 +14,12 @@ interface Initiative {
   timePeriod: string;
   videoUrl?: string;
   videoStoragePath?: string;
+  likes: number;
   createdAt?: Date;
 }
 
 export default function Activities() {
   const [showForm, setShowForm] = useState(false);
-  const [isUploading, setIsUploading] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const [formData, setFormData] = useState({
     name: "",
     targetCategory: "",
@@ -40,38 +39,19 @@ export default function Activities() {
     },
   });
 
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    setIsUploading(true);
-    const formDataUpload = new FormData();
-    formDataUpload.append("file", file);
-
-    try {
-      const res = await fetch("/api/upload", {
+  const likeMutation = useMutation({
+    mutationFn: async (id: number) => {
+      const res = await fetch(`/api/initiatives/${id}/like`, {
         method: "POST",
-        body: formDataUpload,
+        credentials: "include",
       });
-      if (!res.ok) throw new Error("Upload failed");
-      const { url } = await res.json();
-      setFormData(prev => ({ ...prev, videoUrl: url }));
-      
-      // Auto-submit or enable save button is already handled by the state update
-      toast({
-        title: "تم رفع الفيديو",
-        description: "تم رفع الملف بنجاح، يمكنك الآن الضغط على حفظ المبادرة",
-      });
-    } catch (err) {
-      toast({
-        variant: "destructive",
-        title: "خطأ في الرفع",
-        description: "فشل رفع الملف إلى الخادم",
-      });
-    } finally {
-      setIsUploading(false);
-    }
-  };
+      if (!res.ok) throw new Error("Failed to like initiative");
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [api.initiatives.list.path] });
+    },
+  });
 
   const createMutation = useMutation({
     mutationFn: async (data: typeof formData) => {
@@ -220,48 +200,17 @@ export default function Activities() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-foreground/80 mb-2">رابط الفيديو أو الرفع من الجهاز</label>
-                  <div className="flex flex-col gap-4">
-                    <div className="flex gap-2">
-                      <input
-                        type="url"
-                        name="videoUrl"
-                        value={formData.videoUrl}
-                        onChange={handleChange}
-                        required
-                        className="flex-1 px-4 py-3 rounded-lg bg-background/50 border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
-                        placeholder="رابط (YouTube/Drive) أو سيظهر رابط الملف المرفوع هنا"
-                        dir="ltr"
-                      />
-                      <input
-                        type="file"
-                        accept="video/*"
-                        onChange={handleFileUpload}
-                        ref={fileInputRef}
-                        className="hidden"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => fileInputRef.current?.click()}
-                        disabled={isUploading}
-                        className={`px-4 py-3 rounded-lg border border-dashed transition-all flex items-center justify-center gap-2 min-w-[140px] ${
-                          formData.videoUrl && !formData.videoUrl.includes('youtube') && !formData.videoUrl.includes('drive')
-                            ? 'border-primary text-primary bg-primary/5'
-                            : 'border-border text-muted-foreground hover:text-primary hover:border-primary'
-                        }`}
-                      >
-                        {isUploading ? (
-                          <div className="w-4 h-4 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
-                        ) : (
-                          <Upload className="w-4 h-4" />
-                        )}
-                        {isUploading ? "جاري الرفع..." : "رفع من الجهاز"}
-                      </button>
-                    </div>
-                    {formData.videoUrl && !formData.videoUrl.includes('youtube') && !formData.videoUrl.includes('drive') && (
-                      <span className="text-xs text-primary">تم رفع الفيديو بنجاح ✓</span>
-                    )}
-                  </div>
+                  <label className="block text-sm font-medium text-foreground/80 mb-2">رابط الفيديو (YouTube/Drive)</label>
+                  <input
+                    type="url"
+                    name="videoUrl"
+                    value={formData.videoUrl}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 rounded-lg bg-background/50 border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+                    placeholder="رابط (YouTube/Drive)"
+                    dir="ltr"
+                  />
                 </div>
 
                 <div>
@@ -281,7 +230,7 @@ export default function Activities() {
                 <div className="flex gap-4 pt-4">
                   <button
                     type="submit"
-                    disabled={createMutation.isPending || isUploading}
+                    disabled={createMutation.isPending}
                     className="flex-1 py-3.5 rounded-lg bg-primary text-white font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all disabled:opacity-50"
                   >
                     {createMutation.isPending ? "جاري الحفظ..." : "حفظ المبادرة"}
@@ -335,12 +284,26 @@ export default function Activities() {
                   <div className="p-5">
                     <div className="flex justify-between items-start mb-2">
                       <h3 className="font-bold text-foreground">{initiative.name}</h3>
-                      <button
-                        onClick={() => deleteMutation.mutate(initiative.id)}
-                        className="p-1.5 rounded-md text-destructive hover:bg-destructive/10 transition-colors opacity-0 group-hover:opacity-100"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
+                      <div className="flex gap-1">
+                        <button
+                          onClick={() => likeMutation.mutate(initiative.id)}
+                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-all active:scale-95"
+                        >
+                          <span className="text-xs font-bold">{initiative.likes || 0}</span>
+                          <motion.div
+                            whileTap={{ scale: 1.4 }}
+                            transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                          >
+                            <Star className={`w-4 h-4 ${initiative.likes > 0 ? 'fill-primary' : ''}`} />
+                          </motion.div>
+                        </button>
+                        <button
+                          onClick={() => deleteMutation.mutate(initiative.id)}
+                          className="p-1.5 rounded-md text-destructive hover:bg-destructive/10 transition-colors opacity-0 group-hover:opacity-100"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
                     </div>
                     <p className="text-sm text-muted-foreground mb-4 line-clamp-2">{initiative.goal}</p>
                     <div className="flex items-center gap-2 text-xs font-medium text-primary">

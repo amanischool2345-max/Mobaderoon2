@@ -84,6 +84,16 @@ export async function registerRoutes(
     }
   });
 
+  app.post("/api/initiatives/:id/like", async (req, res) => {
+    try {
+      const id = Number(req.params.id);
+      const updated = await storage.likeInitiative(id);
+      res.json(updated);
+    } catch (err) {
+      res.status(404).json({ message: "Initiative not found" });
+    }
+  });
+
   app.get("/api/discussions", async (req, res) => {
     const discussionsList = await storage.getDiscussions();
     res.json(discussionsList);
