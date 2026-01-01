@@ -9,21 +9,21 @@ export default function Games() {
       title: "لعبة فرز النفايات",
       description: "تعلم كيفية فرز النفايات بشكل صحيح لحماية البيئة",
       icon: <Trash2 className="w-12 h-12 text-green-500" />,
-      url: "https://wordwall.net/embed/787227d86f784e1b9b94680856012015?themeId=1&templateId=5&fontStackId=0",
+      url: "https://wordwall.net/embed/787227d86f784e1b9b94680856012015",
       color: "bg-green-50 dark:bg-green-950/20"
     },
     {
       title: "توفير المياه",
       description: "ساعد في توفير المياه من خلال اتخاذ القرارات الصحيحة",
       icon: <Droplets className="w-12 h-12 text-blue-500" />,
-      url: "https://wordwall.net/embed/4b85c87706d34b3f81e35d105c363994?themeId=1&templateId=3&fontStackId=0",
+      url: "https://wordwall.net/embed/4b85c87706d34b3f81e35d105c363994",
       color: "bg-blue-50 dark:bg-blue-950/20"
     },
     {
       title: "حماية الطبيعة",
       description: "اكتشف طرقاً جديدة لحماية الأشجار والنباتات في مدرستك",
       icon: <Leaf className="w-12 h-12 text-emerald-500" />,
-      url: "https://wordwall.net/embed/5a6a6a1d8f8d4e9c8a9a9a9a9a9a9a9a", // Placeholder WordWall ID
+      url: "https://wordwall.net/embed/40960533",
       color: "bg-emerald-50 dark:bg-emerald-950/20"
     }
   ];
