@@ -12,6 +12,7 @@ import Activities from "@/pages/activities";
 import Wheel from "@/pages/wheel";
 import Stars from "@/pages/stars";
 import Guide from "@/pages/guide";
+import Games from "@/pages/games";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -26,6 +27,7 @@ function Router() {
       <Route path="/wheel" component={Wheel} />
       <Route path="/stars" component={Stars} />
       <Route path="/guide" component={Guide} />
+      <Route path="/games" component={Games} />
       {/* Fallback to 404 */}
       <Route component={NotFound} />
     </Switch>
