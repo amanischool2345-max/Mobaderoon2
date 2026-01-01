@@ -4,6 +4,7 @@ import { Plus, Trash2, User, Upload, Star } from "lucide-react";
 import { useState, useRef } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/use-auth";
 
 interface StarInitiative {
   id: number;
@@ -13,6 +14,7 @@ interface StarInitiative {
 }
 
 export default function FeaturedStars() {
+  const { user: authUser } = useAuth();
   const [showForm, setShowForm] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -112,18 +114,20 @@ export default function FeaturedStars() {
 
       <section className="py-12">
         <div className="container mx-auto px-4">
-          <div className="flex justify-end mb-8">
-            <button
-              onClick={() => setShowForm(!showForm)}
-              className="flex items-center gap-2 px-6 py-3 rounded-full bg-amber-500 text-white font-bold shadow-lg hover:bg-amber-600 transition-all"
-            >
-              <Plus className="w-5 h-5" />
-              إضافة نجمة مبادرة
-            </button>
-          </div>
+          {authUser?.role === "teacher" && (
+            <div className="flex justify-end mb-8">
+              <button
+                onClick={() => setShowForm(!showForm)}
+                className="flex items-center gap-2 px-6 py-3 rounded-full bg-amber-500 text-white font-bold shadow-lg hover:bg-amber-600 transition-all"
+              >
+                <Plus className="w-5 h-5" />
+                إضافة نجمة مبادرة
+              </button>
+            </div>
+          )}
 
           <AnimatePresence>
-            {showForm && (
+            {showForm && authUser?.role === "teacher" && (
               <motion.div
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: "auto" }}

@@ -124,6 +124,20 @@ export default function AuthPage() {
                 )}
               </div>
 
+              {!isLogin && (
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-foreground/80">أنا...</label>
+                  <select
+                    {...form.register("role")}
+                    className="w-full px-4 py-3 rounded-xl bg-background/50 border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+                    dir="rtl"
+                  >
+                    <option value="student">طالبة</option>
+                    <option value="teacher">معلمة</option>
+                  </select>
+                </div>
+              )}
+
               <button
                 type="submit"
                 disabled={isPending}

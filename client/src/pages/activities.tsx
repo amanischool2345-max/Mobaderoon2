@@ -5,6 +5,7 @@ import { useState, useRef } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@shared/routes";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/use-auth";
 
 interface Initiative {
   id: number;
@@ -19,6 +20,7 @@ interface Initiative {
 }
 
 export default function Activities() {
+  const { user: authUser } = useAuth();
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -145,21 +147,23 @@ export default function Activities() {
 
       <section className="py-20">
         <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-12"
-          >
-            <button
-              onClick={() => setShowForm(!showForm)}
-              className="flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-primary to-primary/80 text-white font-bold shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 transition-all duration-200"
+          {authUser?.role === "teacher" && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-12"
             >
-              <Plus className="w-5 h-5" />
-              إضافة فيديو المبادرة
-            </button>
-          </motion.div>
+              <button
+                onClick={() => setShowForm(!showForm)}
+                className="flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-primary to-primary/80 text-white font-bold shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 transition-all duration-200"
+              >
+                <Plus className="w-5 h-5" />
+                إضافة فيديو المبادرة
+              </button>
+            </motion.div>
+          )}
 
-          {showForm && (
+          {showForm && authUser?.role === "teacher" && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
