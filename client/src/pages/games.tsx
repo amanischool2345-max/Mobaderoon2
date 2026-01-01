@@ -1,7 +1,6 @@
 import { Layout } from "@/components/Layout";
-import { Link } from "wouter";
 import { motion } from "framer-motion";
-import { Gamepad2, Leaf, Trash2, Droplets } from "lucide-react";
+import { Gamepad2, Leaf, Trash2, Droplets, ExternalLink } from "lucide-react";
 
 export default function Games() {
   const games = [
@@ -9,21 +8,21 @@ export default function Games() {
       title: "لعبة فرز النفايات",
       description: "تعلم كيفية فرز النفايات بشكل صحيح لحماية البيئة",
       icon: <Trash2 className="w-12 h-12 text-green-500" />,
-      url: "https://wordwall.net/embed/787227d86f784e1b9b94680856012015",
+      url: "https://wordwall.net/play/78722/786/115",
       color: "bg-green-50 dark:bg-green-950/20"
     },
     {
       title: "توفير المياه",
       description: "ساعد في توفير المياه من خلال اتخاذ القرارات الصحيحة",
       icon: <Droplets className="w-12 h-12 text-blue-500" />,
-      url: "https://wordwall.net/embed/4b85c87706d34b3f81e35d105c363994",
+      url: "https://wordwall.net/play/4b85c87706d34b3f81e35d105c363994",
       color: "bg-blue-50 dark:bg-blue-950/20"
     },
     {
       title: "حماية البيئة",
       description: "اكتشف طرقاً جديدة لحماية الطبيعة والبيئة في مدرستك",
       icon: <Leaf className="w-12 h-12 text-emerald-500" />,
-      url: "https://wordwall.net/embed/44078835",
+      url: "https://wordwall.net/play/44078/835",
       color: "bg-emerald-50 dark:bg-emerald-950/20"
     }
   ];
@@ -66,42 +65,22 @@ export default function Games() {
                   <h3 className="text-2xl font-bold mb-3 font-display">{game.title}</h3>
                   <p className="text-muted-foreground mb-8 leading-relaxed">{game.description}</p>
                   
-                  <div className="aspect-video w-full rounded-2xl overflow-hidden bg-white shadow-inner mb-6 border border-border/30">
-                    <iframe
-                      src={game.url}
-                      className="w-full h-full"
-                      allowFullScreen
-                      frameBorder="0"
-                    />
+                  <div className="bg-white/50 dark:bg-white/5 rounded-2xl p-6 text-center border border-dashed border-border mb-6">
+                    <p className="text-sm text-muted-foreground mb-4">اضغط على الزر أدناه لفتح اللعبة في نافذة جديدة وبدء التحدي</p>
+                    <a
+                      href={game.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full py-4 bg-primary text-white font-bold rounded-xl hover:bg-primary/90 transition-all flex items-center justify-center gap-2"
+                    >
+                      <ExternalLink className="w-5 h-5" />
+                      العب الآن
+                    </a>
                   </div>
-
-                  <a
-                    href={game.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full py-4 bg-background border-2 border-primary text-primary font-bold rounded-xl hover:bg-primary hover:text-white transition-all text-center inline-block"
-                  >
-                    العب في صفحة كاملة
-                  </a>
                 </div>
               </motion.div>
             ))}
           </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mt-16 p-12 bg-gradient-to-br from-primary to-primary/80 text-white rounded-3xl text-center shadow-2xl shadow-primary/20"
-          >
-            <h2 className="text-3xl font-bold mb-4">هل استمتعت بالألعاب؟</h2>
-            <p className="text-xl opacity-90 mb-8">حول ما تعلمته اليوم إلى واقع من خلال طرح مبادرة جديدة في مدرستك</p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Link href="/ideas">
-                <button className="px-8 py-4 bg-white text-primary font-bold rounded-xl hover:bg-opacity-90 transition-all">اطرحي فكرة</button>
-              </Link>
-            </div>
-          </motion.div>
         </div>
       </section>
     </Layout>
