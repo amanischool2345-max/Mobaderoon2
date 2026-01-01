@@ -12,17 +12,17 @@ export default function Games() {
       color: "bg-green-50 dark:bg-green-950/20"
     },
     {
-      title: "توفير المياه",
-      description: "ساعد في توفير المياه من خلال اتخاذ القرارات الصحيحة",
+      title: "لعبة تنظيف المحيط",
+      description: "ساعد في تنظيف المحيط وحماية الكائنات البحرية من التلوث",
       icon: <Droplets className="w-12 h-12 text-blue-500" />,
-      url: "https://wordwall.net/play/4b85c87706d34b3f81e35d105c363994",
+      url: "https://www.abcya.com/games/cleaning_the_ocean",
       color: "bg-blue-50 dark:bg-blue-950/20"
     },
     {
-      title: "حماية البيئة",
-      description: "اكتشف طرقاً جديدة لحماية الطبيعة والبيئة في مدرستك",
+      title: "لعبة فرز النفايات العالمية",
+      description: "تحدي نفسك في فرز النفايات المنزلية بسرعة ودقة",
       icon: <Leaf className="w-12 h-12 text-emerald-500" />,
-      url: "https://wordwall.net/play/44078/835",
+      url: "https://www.turtlediary.com/game/recycling-waste.html",
       color: "bg-emerald-50 dark:bg-emerald-950/20"
     }
   ];
