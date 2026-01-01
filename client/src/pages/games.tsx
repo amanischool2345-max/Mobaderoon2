@@ -8,21 +8,21 @@ export default function Games() {
       title: "لعبة فرز النفايات",
       description: "تعلم كيفية فرز النفايات بشكل صحيح لحماية البيئة",
       icon: <Trash2 className="w-12 h-12 text-green-500" />,
-      url: "https://wordwall.net/resource/787227d86f784e1b9b94680856012015",
+      url: "https://wordwall.net/play/78722/786/115",
       color: "bg-green-50 dark:bg-green-950/20"
     },
     {
       title: "توفير المياه",
       description: "ساعد في توفير المياه من خلال اتخاذ القرارات الصحيحة",
       icon: <Droplets className="w-12 h-12 text-blue-500" />,
-      url: "https://wordwall.net/resource/4b85c87706d34b3f81e35d105c363994",
+      url: "https://wordwall.net/play/4b85c87706d34b3f81e35d105c363994",
       color: "bg-blue-50 dark:bg-blue-950/20"
     },
     {
       title: "حماية البيئة",
       description: "اكتشف طرقاً جديدة لحماية الطبيعة والبيئة في مدرستك",
       icon: <Leaf className="w-12 h-12 text-emerald-500" />,
-      url: "https://wordwall.net/resource/44078835",
+      url: "https://wordwall.net/play/44078/835",
       color: "bg-emerald-50 dark:bg-emerald-950/20"
     }
   ];
@@ -66,14 +66,14 @@ export default function Games() {
                   <p className="text-muted-foreground mb-8 leading-relaxed">{game.description}</p>
                   
                   <div className="bg-white/50 dark:bg-white/5 rounded-2xl p-6 text-center border border-dashed border-border mb-6">
-                    <p className="text-sm text-muted-foreground mb-4">اضغط على الزر أدناه لفتح اللعبة في نافذة جديدة وبدء التحدي</p>
+                    <p className="text-sm text-muted-foreground mb-4">اضغط على الزر أدناه لبدء التحدي</p>
                     <a
                       href={game.url}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-full py-4 bg-primary text-white font-bold rounded-xl hover:bg-primary/90 transition-all flex items-center justify-center gap-2"
                     >
-                      <ExternalLink className="w-5 h-5" />
+                      <Gamepad2 className="w-5 h-5" />
                       العب الآن
                     </a>
                   </div>
