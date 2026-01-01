@@ -20,10 +20,10 @@ export default function Games() {
       color: "bg-blue-50 dark:bg-blue-950/20"
     },
     {
-      title: "حماية الطبيعة",
-      description: "اكتشف طرقاً جديدة لحماية الأشجار والنباتات في مدرستك",
+      title: "حماية البيئة",
+      description: "اكتشف طرقاً جديدة لحماية الطبيعة والبيئة في مدرستك",
       icon: <Leaf className="w-12 h-12 text-emerald-500" />,
-      url: "https://wordwall.net/embed/40960533",
+      url: "https://wordwall.net/embed/44078835",
       color: "bg-emerald-50 dark:bg-emerald-950/20"
     }
   ];
