@@ -8,14 +8,14 @@ export default function Games() {
       title: "لعبة فرز النفايات",
       description: "تعلم كيفية فرز النفايات بشكل صحيح لحماية البيئة",
       icon: <Trash2 className="w-12 h-12 text-green-500" />,
-      url: "https://wordwall.net/play/78722/786/115",
+      url: "https://wordwall.net/ar/resource/10880758",
       color: "bg-green-50 dark:bg-green-950/20"
     },
     {
-      title: "لعبة تنظيف المحيط",
+      title: "لعبة فرز النفايات في المحيط",
       description: "ساعد في تنظيف المحيط وحماية الكائنات البحرية من التلوث",
       icon: <Droplets className="w-12 h-12 text-blue-500" />,
-      url: "https://www.abcya.com/games/cleaning_the_ocean",
+      url: "https://www.construct.net/en/free-online-games/eco-rescue-mission-73972/play",
       color: "bg-blue-50 dark:bg-blue-950/20"
     },
     {
