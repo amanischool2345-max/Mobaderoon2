@@ -36,7 +36,7 @@ export const discussions = pgTable("discussions", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
-export const insertUserSchema = createInsertSchema(users);
+export const insertUserSchema = createInsertSchema(users).omit({ id: true });
 export const insertInitiativeSchema = createInsertSchema(initiatives).omit({ id: true, createdAt: true });
 export const insertStarSchema = createInsertSchema(stars).omit({ id: true, createdAt: true });
 export const insertDiscussionSchema = createInsertSchema(discussions).omit({ id: true, createdAt: true });

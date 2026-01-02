@@ -81,7 +81,7 @@ export default function Contact() {
                 {
                   icon: <Phone className="w-6 h-6 text-purple-500" />,
                   title: "الهاتف",
-                  content: "+962 6 XXXX XXXX",
+                  content: "+962 6 200 8860",
                   subtext: "ساعات العمل: الأحد - الخميس (8 صباحاً - 2 مساءً)"
                 },
                 {

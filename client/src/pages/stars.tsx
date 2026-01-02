@@ -98,7 +98,7 @@ export default function FeaturedStars() {
   };
 
   const isAdmin = authUser?.username === "Amanileen2016@gmail.com";
-  const canAddStar = authUser?.role === "teacher" || isAdmin;
+  const canAddStar = (authUser as any)?.role === "teacher" || isAdmin;
 
   return (
     <Layout>

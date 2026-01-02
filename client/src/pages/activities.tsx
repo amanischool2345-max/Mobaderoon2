@@ -127,7 +127,7 @@ export default function Activities() {
   };
 
   const isAdmin = authUser?.username === "Amanileen2016@gmail.com";
-  const canAddInitiative = authUser?.role === "teacher" || isAdmin;
+  const canAddInitiative = (authUser as any)?.role === "teacher" || isAdmin;
 
   return (
     <Layout>
