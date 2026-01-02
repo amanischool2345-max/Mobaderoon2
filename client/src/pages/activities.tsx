@@ -126,6 +126,9 @@ export default function Activities() {
     return url;
   };
 
+  const isAdmin = authUser?.username === "Amanileen2016@gmail.com";
+  const canAddInitiative = authUser?.role === "teacher" || isAdmin;
+
   return (
     <Layout>
       <section className="relative overflow-hidden pt-20 pb-12 md:pt-32 md:pb-20 bg-gradient-to-b from-primary/5 to-transparent">
@@ -147,7 +150,7 @@ export default function Activities() {
 
       <section className="py-20">
         <div className="container mx-auto px-4">
-          {authUser?.role === "teacher" && (
+          {canAddInitiative && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -163,7 +166,7 @@ export default function Activities() {
             </motion.div>
           )}
 
-          {showForm && authUser?.role === "teacher" && (
+          {showForm && canAddInitiative && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

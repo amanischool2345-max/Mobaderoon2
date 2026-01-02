@@ -97,6 +97,9 @@ export default function FeaturedStars() {
     createMutation.mutate(formData);
   };
 
+  const isAdmin = authUser?.username === "Amanileen2016@gmail.com";
+  const canAddStar = authUser?.role === "teacher" || isAdmin;
+
   return (
     <Layout>
       <section className="relative pt-20 pb-12 bg-gradient-to-b from-amber-50 to-transparent dark:from-amber-950/10">
@@ -114,7 +117,7 @@ export default function FeaturedStars() {
 
       <section className="py-12">
         <div className="container mx-auto px-4">
-          {authUser?.role === "teacher" && (
+          {canAddStar && (
             <div className="flex justify-end mb-8">
               <button
                 onClick={() => setShowForm(!showForm)}
@@ -127,7 +130,7 @@ export default function FeaturedStars() {
           )}
 
           <AnimatePresence>
-            {showForm && authUser?.role === "teacher" && (
+            {showForm && canAddStar && (
               <motion.div
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: "auto" }}

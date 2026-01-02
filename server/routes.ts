@@ -34,6 +34,11 @@ export async function registerRoutes(
   });
 
   app.post("/api/stars", async (req, res) => {
+    if (!req.isAuthenticated()) return res.sendStatus(401);
+    const user = req.user as any;
+    if (user.role !== "teacher" && user.username !== "Amanileen2016@gmail.com") {
+      return res.status(403).send("Only teachers/admin can create stars");
+    }
     try {
       const star = await storage.createStar(req.body);
       res.status(201).json(star);
@@ -43,6 +48,11 @@ export async function registerRoutes(
   });
 
   app.delete("/api/stars/:id", async (req, res) => {
+    if (!req.isAuthenticated()) return res.sendStatus(401);
+    const user = req.user as any;
+    if (user.role !== "teacher" && user.username !== "Amanileen2016@gmail.com") {
+      return res.status(403).send("Only teachers/admin can delete stars");
+    }
     try {
       const id = Number(req.params.id);
       await storage.deleteStar(id);
@@ -59,6 +69,11 @@ export async function registerRoutes(
   });
 
   app.post(api.initiatives.create.path, async (req, res) => {
+    if (!req.isAuthenticated()) return res.sendStatus(401);
+    const user = req.user as any;
+    if (user.role !== "teacher" && user.username !== "Amanileen2016@gmail.com") {
+      return res.status(403).send("Only teachers/admin can create initiatives");
+    }
     try {
       const input = api.initiatives.create.input.parse(req.body);
       const initiative = await storage.createInitiative(input);
@@ -75,6 +90,11 @@ export async function registerRoutes(
   });
 
   app.delete(api.initiatives.delete.path, async (req, res) => {
+    if (!req.isAuthenticated()) return res.sendStatus(401);
+    const user = req.user as any;
+    if (user.role !== "teacher" && user.username !== "Amanileen2016@gmail.com") {
+      return res.status(403).send("Only teachers/admin can delete initiatives");
+    }
     try {
       const id = Number(req.params.id);
       await storage.deleteInitiative(id);
