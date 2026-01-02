@@ -113,12 +113,24 @@ export default function Activities() {
   // Helper to get YouTube embed URL or similar if needed
   const getEmbedUrl = (url: string) => {
     if (!url) return null;
-    if (url.includes('youtube.com/watch?v=')) {
-      return url.replace('watch?v=', 'embed/');
-    }
+    
+    // Handle youtu.be links
     if (url.includes('youtu.be/')) {
-      return url.replace('youtu.be/', 'youtube.com/embed/');
+      const id = url.split('youtu.be/')[1]?.split(/[?#]/)[0];
+      return id ? `https://www.youtube.com/embed/${id}` : null;
     }
+    
+    // Handle youtube.com links
+    if (url.includes('youtube.com/watch')) {
+      const urlObj = new URL(url);
+      const id = urlObj.searchParams.get('v');
+      return id ? `https://www.youtube.com/embed/${id}` : null;
+    }
+    
+    if (url.includes('youtube.com/embed/')) {
+      return url;
+    }
+
     // If it's a direct link to a file, we might want to use a <video> tag instead
     if (url.startsWith('/api/storage/') || url.match(/\.(mp4|webm|ogg)$/i)) {
       return null; // Return null to trigger <video> tag
