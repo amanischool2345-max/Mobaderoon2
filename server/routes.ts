@@ -69,10 +69,10 @@ export async function registerRoutes(
   });
 
   app.post(api.initiatives.create.path, async (req, res) => {
-    if (!req.isAuthenticated()) return res.sendStatus(401);
+    if (!req.isAuthenticated()) return res.status(401).json({ message: "Unauthorized" });
     const user = req.user as any;
     if (user.role !== "teacher" && user.username !== "Amanileen2016@gmail.com") {
-      return res.status(403).send("Only teachers/admin can create initiatives");
+      return res.status(403).json({ message: "Only teachers/admin can create initiatives" });
     }
     try {
       const input = api.initiatives.create.input.parse(req.body);
@@ -85,7 +85,7 @@ export async function registerRoutes(
           field: err.errors[0].path.join('.'),
         });
       }
-      throw err;
+      res.status(500).json({ message: "Internal server error" });
     }
   });
 

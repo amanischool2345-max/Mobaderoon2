@@ -127,6 +127,7 @@ export default function Activities() {
   };
 
   const isAdmin = authUser?.username === "Amanileen2016@gmail.com";
+  // Allow adding initiatives for both teachers and our specific admin user
   const canAddInitiative = (authUser as any)?.role === "teacher" || isAdmin;
 
   return (
