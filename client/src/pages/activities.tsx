@@ -114,19 +114,31 @@ export default function Activities() {
   const getEmbedUrl = (url: string) => {
     if (!url) return null;
     
+    let videoId = '';
+    
     // Handle youtu.be links
     if (url.includes('youtu.be/')) {
-      const id = url.split('youtu.be/')[1]?.split(/[?#]/)[0];
-      return id ? `https://www.youtube.com/embed/${id}` : null;
+      videoId = url.split('youtu.be/')[1]?.split(/[?#]/)[0];
     }
-    
+    // Handle YouTube Shorts links
+    else if (url.includes('youtube.com/shorts/')) {
+      videoId = url.split('youtube.com/shorts/')[1]?.split(/[?#]/)[0];
+    }
     // Handle youtube.com links
-    if (url.includes('youtube.com/watch')) {
-      const urlObj = new URL(url);
-      const id = urlObj.searchParams.get('v');
-      return id ? `https://www.youtube.com/embed/${id}` : null;
+    else if (url.includes('youtube.com/watch')) {
+      try {
+        const urlObj = new URL(url);
+        videoId = urlObj.searchParams.get('v') || '';
+      } catch (e) {
+        // Fallback for malformed URLs
+        videoId = url.split('v=')[1]?.split(/[&?#]/)[0] || '';
+      }
     }
     
+    if (videoId) {
+      return `https://www.youtube.com/embed/${videoId}`;
+    }
+
     if (url.includes('youtube.com/embed/')) {
       return url;
     }
