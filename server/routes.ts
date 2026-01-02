@@ -71,7 +71,8 @@ export async function registerRoutes(
   app.post(api.initiatives.create.path, async (req, res) => {
     if (!req.isAuthenticated()) return res.status(401).json({ message: "Unauthorized" });
     const user = req.user as any;
-    if (user.role !== "teacher" && user.username !== "Amanileen2016@gmail.com") {
+    const username = user.username.trim();
+    if (user.role !== "teacher" && username !== "Amanileen2016@gmail.com") {
       return res.status(403).json({ message: "Only teachers/admin can create initiatives" });
     }
     try {

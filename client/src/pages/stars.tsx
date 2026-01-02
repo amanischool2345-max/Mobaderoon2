@@ -97,7 +97,7 @@ export default function FeaturedStars() {
     createMutation.mutate(formData);
   };
 
-  const isAdmin = authUser?.username === "Amanileen2016@gmail.com";
+  const isAdmin = authUser?.username.trim() === "Amanileen2016@gmail.com";
   const canAddStar = (authUser as any)?.role === "teacher" || isAdmin;
 
   return (
