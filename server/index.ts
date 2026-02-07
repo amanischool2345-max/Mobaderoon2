@@ -4,7 +4,26 @@ import { registerRoutes } from "./routes";
 import { serveStatic } from "./static";
 import { createServer } from "http";
 import path from "path";
+// من هون
+import { createClient } from '@supabase/supabase-js';
 
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY; // Backend key
+
+export const supabase = createClient(supabaseUrl, supabaseKey);
+
+// PORT ديناميكي
+const port = process.env.PORT || 3000;
+app.listen(port, () => console.log(`Server running on port ${port}`));
+
+// اختبار الاتصال (اختياري)
+async function testConnection() {
+  const { data, error } = await supabase.from('users').select('*').limit(1);
+  if (error) console.error('❌ Supabase connection error:', error);
+  else console.log('✅ Supabase connected! Data sample:', data);
+}
+testConnection();
+// الى هون
 const app = express();
 const httpServer = createServer(app);
 
